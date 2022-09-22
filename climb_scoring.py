@@ -16,7 +16,10 @@ class FlatScoring(ScoringMethod):
     # score_ascent is marked as a classmethod?
     @classmethod
     def score_ascent(cls, ascent, logbook):
-        grade_base_score = ascent.grade.numerical_grade
+        try:
+            grade_base_score = ascent.grade.numerical_grade
+        except AttributeError: # this occurs when ascent.grade is None and so does not have a "numerical_grade" attribute
+            return 0 # Not really appropriate, as this will bias averages down - likely won't have a major impact though
         return grade_base_score
 
 class ScaledScoring(ScoringMethod):
